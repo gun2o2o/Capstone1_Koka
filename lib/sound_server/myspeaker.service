@@ -1,0 +1,22 @@
+[Unit]
+Description=My Speaker Project
+After=network.target audio.target
+
+[Service]
+User=koka
+Group=koka
+Environment="XDG_RUNTIME_DIR=/run/user/1000"
+Environment="PULSE_RUNTIME_PATH=/run/user/1000/pulse"
+
+WorkingDirectory=/home/koka/Desktop/main
+ExecStartPre=/bin/sleep 10
+ExecStart=/home/koka/Desktop/main/venv/bin/python -u /home/koka/Desktop/main/main.py
+
+Restart=always
+RestartSec=5
+
+StandardOutput=inherit
+StandardError=inherit
+
+[Install]
+WantedBy=multi-user.target

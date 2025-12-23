@@ -1,0 +1,649 @@
+[
+  {
+    "time": 3,
+    "type": "inning_start",
+    "text": "3회말 시작 / 한화 최재훈 등장",
+    "led": "RESET",
+    "sound": "opening.mp3",
+    "data": {
+      "inning": "3회말",
+      "b": 0,
+      "s": 0,
+      "o": 0,
+      "batter": "최재훈"
+    }
+  },
+  {
+    "time": 87,
+    "type": "walk",
+    "text": "최재훈 볼넷 출루 (무사 1루)",
+    "led": "BASE_1",
+    "sound": "cheer.mp3",
+    "data": {
+      "base1": 1
+    }
+  },
+  {
+    "time": 106,
+    "type": "batter_change",
+    "text": "LG 박해민 등장",
+    "led": "NONE",
+    "sound": "박해민.mp3",
+    "data": {
+      "batter": "박해민"
+    }
+  },
+  {
+    "time": 171,
+    "type": "swing",
+    "text": "타격"
+  },
+  {
+    "time": 180,
+    "type": "hit_double",
+    "text": "박해민 2루타 (무사 23루)",
+    "led": "HIT_GREEN",
+    "sound": "hit_big.mp3",
+    "data": {
+      "base2": 1,
+      "base3": 1
+    }
+  },
+  {
+    "time": 220,
+    "type": "batter_change",
+    "text": "LG 신민재 등장",
+    "sound": "신민재.mp3",
+    "data": {
+      "batter": "신민재"
+    }
+  },
+  {
+    "time": 335,
+    "type": "strikeout",
+    "text": "신민재 삼진 아웃 (1사 23루)",
+    "led": "OUT",
+    "sound": "strikeout.mp3",
+    "data": {
+      "o": 1
+    }
+  },
+  {
+    "time": 361,
+    "type": "batter_change",
+    "text": "KT 안현민 등장",
+    "sound": "안현민.mp3",
+    "data": {
+      "batter": "안현민"
+    }
+  },
+  {
+    "time": 503,
+    "type": "walk",
+    "text": "안현민 볼넷 출루 (1사 만루)",
+    "led": "BASE_1_2_3",
+    "sound": "cheer.mp3"
+  },
+  {
+    "time": 524,
+    "type": "batter_change",
+    "text": "키움 송성문 등장",
+    "sound": "송성문.mp3",
+    "data": {
+      "batter": "송성문"
+    }
+  },
+  {
+    "time": 672,
+    "type": "swing",
+    "text": "타격"
+  },
+  {
+    "time": 682,
+    "type": "hit_rbi",
+    "text": "송성문 2타점 적시타 (한국 2 : 일본 0 / 1사 13루)",
+    "led": "HIT_GREEN",
+    "sound": "rbi.mp3",
+    "data": {
+      "score_kor": 2
+    }
+  },
+  {
+    "time": 737,
+    "type": "batter_change",
+    "text": "상무(롯데) 한동희 등장",
+    "sound": "한동희.mp3",
+    "data": {
+      "batter": "한동희"
+    }
+  },
+  {
+    "time": 916,
+    "type": "strikeout",
+    "text": "삼진 아웃 -> 송성문 안현민 더블스틸 성공 -> 안현민 득점, 송성문 2루 (한국 3 : 일본 0 / 2사 2루)",
+    "led": "OUT",
+    "sound": "steal.mp3",
+    "data": {
+      "score_kor": 3,
+      "o": 2
+    }
+  },
+  {
+    "time": 960,
+    "type": "batter_change",
+    "text": "LG 문보경 등장",
+    "sound": "문보경.mp3",
+    "data": {
+      "batter": "문보경"
+    }
+  },
+  {
+    "time": 964,
+    "type": "swing",
+    "text": "타격"
+  },
+  {
+    "time": 971,
+    "type": "flyout",
+    "text": "좌익수 플라이아웃 (공수교대 / 3회말 종료)",
+    "led": "OUT",
+    "sound": "out.mp3",
+    "data": {
+      "inning_end": true
+    }
+  },
+  {
+    "time": 985,
+    "type": "inning_start",
+    "text": "4회말 시작",
+    "led": "RESET",
+    "sound": "opening.mp3",
+    "data": {
+      "inning": "4회말",
+      "o": 0
+    }
+  },
+  {
+    "time": 994,
+    "type": "batter_change",
+    "text": "한화 문현빈 등장",
+    "sound": "문현빈.mp3",
+    "data": {
+      "batter": "문현빈"
+    }
+  },
+  {
+    "time": 1013,
+    "type": "swing",
+    "text": "타격"
+  },
+  {
+    "time": 1078,
+    "type": "hit",
+    "text": "안타 (무사 1루)",
+    "led": "BASE_1",
+    "sound": "hit.mp3",
+    "data": {
+      "base1": 1
+    }
+  },
+  {
+    "time": 1088,
+    "type": "batter_change",
+    "text": "NC 김주원 등장",
+    "sound": "김주원.mp3",
+    "data": {
+      "batter": "김주원"
+    }
+  },
+  {
+    "time": 1203,
+    "type": "strikeout",
+    "text": "삼진 아웃 (1사 1루)",
+    "led": "OUT",
+    "sound": "strikeout.mp3",
+    "data": {
+      "o": 1
+    }
+  },
+  {
+    "time": 1227,
+    "type": "batter_change",
+    "text": "한화 최재훈 등장",
+    "sound": "최재훈.mp3",
+    "data": {
+      "batter": "최재훈"
+    }
+  },
+  {
+    "time": 1293,
+    "type": "steal",
+    "text": "문현빈 도루 성공 (1사 2루)",
+    "led": "BASE_2",
+    "sound": "steal.mp3",
+    "data": {
+      "base1": 0,
+      "base2": 1
+    }
+  },
+  {
+    "time": 1363,
+    "type": "strikeout",
+    "text": "최재훈 삼진 아웃 (2사 2루)",
+    "led": "OUT",
+    "sound": "strikeout.mp3",
+    "data": {
+      "o": 2
+    }
+  },
+  {
+    "time": 1385,
+    "type": "batter_change",
+    "text": "LG 박해민 등장",
+    "sound": "박해민.mp3",
+    "data": {
+      "batter": "박해민"
+    }
+  },
+  {
+    "time": 1481,
+    "type": "hbp",
+    "text": "박해민 몸에 맞는 볼 출루 (2사 12루)",
+    "led": "BASE_1_2",
+    "sound": "cheer.mp3"
+  },
+  {
+    "time": 1505,
+    "type": "batter_change",
+    "text": "LG 신민재 등장",
+    "sound": "신민재.mp3",
+    "data": {
+      "batter": "신민재"
+    }
+  },
+  {
+    "time": 1539,
+    "type": "swing",
+    "text": "타격"
+  },
+  {
+    "time": 1547,
+    "type": "hit_rbi",
+    "text": "1타점 적시타 (한국 4 : 일본 3 / 2사 13루)",
+    "led": "HIT_GREEN",
+    "sound": "rbi.mp3",
+    "data": {
+      "score_kor": 4
+    }
+  },
+  {
+    "time": 1595,
+    "type": "batter_change",
+    "text": "KT 안현민 등장",
+    "sound": "안현민.mp3",
+    "data": {
+      "batter": "안현민"
+    }
+  },
+  {
+    "time": 1741,
+    "type": "walk",
+    "text": "KT 안현민 볼넷 출루 (2사 만루)",
+    "led": "BASE_1_2_3",
+    "sound": "cheer.mp3"
+  },
+  {
+    "time": 1750,
+    "type": "batter_change",
+    "text": "키움 송성문 등장",
+    "sound": "송성문.mp3",
+    "data": {
+      "batter": "송성문"
+    }
+  },
+  {
+    "time": 1774,
+    "type": "swing",
+    "text": "타격"
+  },
+  {
+    "time": 1778,
+    "type": "groundout",
+    "text": "1루수 땅볼 아웃 (공수교대 / 4회말 종료)",
+    "led": "OUT",
+    "sound": "out.mp3",
+    "data": {
+      "inning_end": true
+    }
+  },
+  {
+    "time": 1793,
+    "type": "inning_start",
+    "text": "7회말 시작",
+    "led": "RESET",
+    "sound": "opening.mp3",
+    "data": {
+      "inning": "7회말",
+      "o": 0
+    }
+  },
+  {
+    "time": 1815,
+    "type": "batter_change",
+    "text": "한화 노시환 등장",
+    "sound": "노시환.mp3",
+    "data": {
+      "batter": "노시환"
+    }
+  },
+  {
+    "time": 1894,
+    "type": "strikeout",
+    "text": "노시환 삼진 아웃 (1아웃)",
+    "led": "OUT",
+    "sound": "strikeout.mp3",
+    "data": {
+      "o": 1
+    }
+  },
+  {
+    "time": 1919,
+    "type": "batter_change",
+    "text": "LG 문보경 등장",
+    "sound": "문보경.mp3",
+    "data": {
+      "batter": "문보경"
+    }
+  },
+  {
+    "time": 2013,
+    "type": "walk",
+    "text": "문보경 볼넷 출루 (1사 1루)",
+    "led": "BASE_1",
+    "sound": "cheer.mp3"
+  },
+  {
+    "time": 2020,
+    "type": "batter_change",
+    "text": "한화 문현빈 등장",
+    "sound": "문현빈.mp3",
+    "data": {
+      "batter": "문현빈"
+    }
+  },
+  {
+    "time": 2202,
+    "type": "walk",
+    "text": "문현빈 볼넷 출루 (1사 12루)",
+    "led": "BASE_1_2",
+    "sound": "cheer.mp3"
+  },
+  {
+    "time": 2220,
+    "type": "batter_change",
+    "text": "NC 김주원 등장",
+    "sound": "김주원.mp3",
+    "data": {
+      "batter": "김주원"
+    }
+  },
+  {
+    "time": 2279,
+    "type": "hbp",
+    "text": "김주원 몸에 맞는 볼 출루 (1사 만루)",
+    "led": "BASE_1_2_3",
+    "sound": "cheer.mp3"
+  },
+  {
+    "time": 2307,
+    "type": "batter_change",
+    "text": "LG 박동원 대타 출전",
+    "sound": "박동원.mp3",
+    "data": {
+      "batter": "박동원"
+    }
+  },
+  {
+    "time": 2411,
+    "type": "swing",
+    "text": "타격"
+  },
+  {
+    "time": 2416,
+    "type": "sac_fly",
+    "text": "좌익수 플라이아웃 -> 3루 주자 문보경 태그업 득점 (한국 5 : 일본 6 / 2아웃)",
+    "led": "SCORE",
+    "sound": "cheer.mp3",
+    "data": {
+      "score_kor": 5,
+      "o": 2
+    }
+  },
+  {
+    "time": 2455,
+    "type": "batter_change",
+    "text": "LG 박해민 등장",
+    "sound": "박해민.mp3",
+    "data": {
+      "batter": "박해민"
+    }
+  },
+  {
+    "time": 2529,
+    "type": "swing",
+    "text": "타격"
+  },
+  {
+    "time": 2532,
+    "type": "hit",
+    "text": "중견수 앞 안타 -> 2루 주자 문현빈 홈 들어오다 아웃",
+    "led": "HIT",
+    "sound": "hit.mp3"
+  },
+  {
+    "time": 2543,
+    "type": "challenge",
+    "text": "대한민국 비디오판독 신청"
+  },
+  {
+    "time": 2639,
+    "type": "inning_end",
+    "text": "아웃 판정 (공수교대 / 7회말 종료)",
+    "led": "RESET"
+  },
+  {
+    "time": 2655,
+    "type": "inning_start",
+    "text": "8회말 시작 (엘도라도 타임)",
+    "led": "RESET",
+    "sound": "opening.mp3",
+    "data": {
+      "inning": "8회말",
+      "o": 0
+    }
+  },
+  {
+    "time": 2671,
+    "type": "batter_change",
+    "text": "LG 신민재 등장",
+    "sound": "신민재.mp3",
+    "data": {
+      "batter": "신민재"
+    }
+  },
+  {
+    "time": 2715,
+    "type": "strikeout",
+    "text": "신민재 삼진 아웃 (1아웃)",
+    "led": "OUT",
+    "sound": "strikeout.mp3",
+    "data": {
+      "o": 1
+    }
+  },
+  {
+    "time": 2732,
+    "type": "batter_change",
+    "text": "KT 안현민 등장",
+    "sound": "안현민.mp3",
+    "data": {
+      "batter": "안현민"
+    }
+  },
+  {
+    "time": 2859,
+    "type": "swing",
+    "text": "타격"
+  },
+  {
+    "time": 2865,
+    "type": "homerun",
+    "text": "KT 안현민 좌익수 뒤 홈런 (한국 6 : 일본 7)",
+    "led": "HR",
+    "sound": "homerun.mp3",
+    "data": {
+      "score_kor": 6
+    }
+  },
+  {
+    "time": 2905,
+    "type": "batter_change",
+    "text": "키움 송성문 등장",
+    "sound": "송성문.mp3",
+    "data": {
+      "batter": "송성문"
+    }
+  },
+  {
+    "time": 2947,
+    "type": "strikeout",
+    "text": "송성문 삼진 아웃 (2아웃)",
+    "led": "OUT",
+    "sound": "strikeout.mp3",
+    "data": {
+      "o": 2
+    }
+  },
+  {
+    "time": 2960,
+    "type": "batter_change",
+    "text": "한화 노시환 등장",
+    "sound": "노시환.mp3",
+    "data": {
+      "batter": "노시환"
+    }
+  },
+  {
+    "time": 3043,
+    "type": "strikeout",
+    "text": "노시환 삼진 아웃 (3아웃 8회말 종료)",
+    "led": "OUT",
+    "sound": "strikeout.mp3",
+    "data": {
+      "inning_end": true
+    }
+  },
+  {
+    "time": 3064,
+    "type": "inning_start",
+    "text": "9회말 시작",
+    "led": "RESET",
+    "sound": "opening.mp3",
+    "data": {
+      "inning": "9회말",
+      "o": 0
+    }
+  },
+  {
+    "time": 3098,
+    "type": "batter_change",
+    "text": "LG 문보경 등장",
+    "sound": "문보경.mp3",
+    "data": {
+      "batter": "문보경"
+    }
+  },
+  {
+    "time": 3125,
+    "type": "swing",
+    "text": "타격"
+  },
+  {
+    "time": 3130,
+    "type": "groundout",
+    "text": "2루수 앞 땅볼 아웃 (1아웃)",
+    "led": "OUT",
+    "sound": "out.mp3",
+    "data": {
+      "o": 1
+    }
+  },
+  {
+    "time": 3153,
+    "type": "batter_change",
+    "text": "한화 문현빈 등장",
+    "sound": "문현빈.mp3",
+    "data": {
+      "batter": "문현빈"
+    }
+  },
+  {
+    "time": 3157,
+    "type": "swing",
+    "text": "타격"
+  },
+  {
+    "time": 3162,
+    "type": "flyout",
+    "text": "좌익수 뜬공 아웃 (2아웃)",
+    "led": "OUT",
+    "sound": "out.mp3",
+    "data": {
+      "o": 2
+    }
+  },
+  {
+    "time": 3190,
+    "type": "batter_change",
+    "text": "NC 김주원 등장",
+    "sound": "김주원.mp3",
+    "data": {
+      "batter": "김주원"
+    }
+  },
+  {
+    "time": 3229,
+    "type": "swing",
+    "text": "타격"
+  },
+  {
+    "time": 3235,
+    "type": "homerun",
+    "text": "NC 김주원 우중간 쪽 홈런 (한국 7 : 일본 7)",
+    "led": "HR",
+    "sound": "homerun.mp3",
+    "data": {
+      "score_kor": 7
+    }
+  },
+  {
+    "time": 3308,
+    "type": "batter_change",
+    "text": "삼성 김영웅 대타 출전",
+    "sound": "김영웅.mp3",
+    "data": {
+      "batter": "김영웅"
+    }
+  },
+  {
+    "time": 3376,
+    "type": "strikeout",
+    "text": "김영웅 삼진 아웃 (3아웃 경기종료)",
+    "led": "OUT",
+    "sound": "strikeout.mp3",
+    "data": {
+      "inning_end": true,
+      "game_end": true
+    }
+  }
+]

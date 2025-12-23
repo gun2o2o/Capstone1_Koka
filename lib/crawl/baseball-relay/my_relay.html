@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>실시간 야구 중계 (Live)</title>
+    <style>
+        /* (기본 스타일) */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Malgun Gothic", "맑은 고딕", helvetica, "Apple SD Gothic Neo", sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin: 10px auto;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            background-color: #fff;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .field-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin: 20px auto;
+            aspect-ratio: 1 / 0.85;
+            background-image: url('https://ssl.pstatic.net/static/sports/resources/live/baseball/ground_base_v6.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+        .player-position {
+            position: absolute;
+            text-align: center;
+            font-size: 12px;
+            font-weight: bold;
+            color: #fff;
+        }
+        .player-position img {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 2px solid #fff;
+            background-color: #eee;
+        }
+        .player-position .name {
+            background-color: rgba(0, 0, 0, 0.6);
+            padding: 2px 5px;
+            border-radius: 4px;
+            white-space: nowrap;
+        }
+        
+        #pitcher  { top: 40.5%; left: 50%; transform: translateX(-50%); }
+        #catcher  { top: 82%; left: 50%; transform: translateX(-50%); }
+        #batter   { top: 68%; left: 70%; transform: translateX(-50%); }
+        #pos-1b   { top: 43%; left: 81%; }
+        #pos-2b   { top: 22%; left: 69%; }
+        #pos-3b   { top: 43%; left: 19%; }
+        #pos-ss   { top: 22%; left: 31%; }
+        #pos-lf   { top: 10%; left: 15%; }
+        #pos-cf   { top: 5%;  left: 50%; transform: translateX(-50%); }
+        #pos-rf   { top: 10%; left: 85%; }
+
+        #scoreboard {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: rgba(0, 0, 0, 0.7);
+            border-radius: 6px;
+            padding: 10px;
+            color: white;
+            font-weight: bold;
+        }
+        .team-score { display: flex; align-items: center; font-size: 18px; line-height: 1.5; }
+        .team-score img { width: 24px; height: 24px; margin-right: 8px; }
+        
+        #bso-box {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: rgba(0, 0, 0, 0.7);
+            border-radius: 6px;
+            padding: 10px;
+            color: white;
+            font-size: 14px;
+        }
+        .bso-lights { display: flex; gap: 4px; margin-top: 5px; }
+        .bso-lights > div { font-weight: bold; width: 10px; }
+        .bso-lights .light {
+            width: 12px; height: 12px; border-radius: 50%;
+            background-color: #555;
+            border: 1px solid #888;
+        }
+        .bso-lights .light.on { background-color: #f00; }
+        #ball-lights .light.on { background-color: #0f0; }
+        #strike-lights .light.on { background-color: #ff0; }
+
+        #on-deck {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            color: white;
+            font-size: 14px;
+        }
+        #on-deck h4 { margin: 0 0 5px 0; font-size: 12px; color: #ccc; }
+        #on-deck ul { list-style: none; margin: 0; padding: 0; }
+        
+        .info-container {
+            padding: 15px;
+            border-top: 1px solid #e0e0e0;
+        }
+        .inning-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .player-card {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+        .player-card img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 12px;
+            background-color: #f0f0f0;
+        }
+        .player-info .name { font-size: 16px; font-weight: bold; }
+        .player-info .position { font-size: 12px; color: #666; margin-left: 5px; }
+        .player-stats { font-size: 12px; color: #555; margin-top: 5px; }
+        .player-stats span { margin-right: 10px; }
+        .player-stats span strong { color: #000; }
+        
+        .update-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+            color: #888;
+            padding: 0 15px 10px;
+        }
+        #error-log {
+            color: #d93025;
+            font-weight: bold;
+        }
+
+        #pitch-by-pitch-list {
+            padding: 10px 15px;
+            font-size: 14px;
+            background-color: #f9f9f9;
+            border-radius: 4px;
+            min-height: 100px;
+        }
+        #pitch-by-pitch-list div {
+            padding: 2px 0;
+            border-bottom: 1px dashed #eee;
+        }
+        #pitch-by-pitch-list div:last-child { border: none; }
+        #pitch-by-pitch-list .change {
+            color: #007aff;
+            font-weight: bold;
+            margin: 5px 0;
+        }
+
+        /* [ ⚾ 2. 알림 배너 CSS 추가 ⚾ ] */
+        #event-notification-banner {
+            padding: 12px 15px;
+            margin-bottom: 10px;
+            background-color: #f0f0f0;
+            border-radius: 4px;
+            text-align: center;
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #333;
+            /* 높이가 변하지 않도록 최소 높이 설정 */
+            min-height: 1.2em; 
+            /* 부드러운 색상 전환 효과 */
+            transition: background-color 0.3s ease, color 0.3s ease; 
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <div class="field-container">
+            <div id="scoreboard">
+                <div class="team-score">
+                    <img id="away-logo" src="">
+                    <span id="away-name">---</span>
+                    <span id="away-score" style="margin-left: 10px;">0</span>
+                </div>
+                <div class="team-score">
+                    <img id="home-logo" src="">
+                    <span id="home-name">---</span>
+                    <span id="home-score" style="margin-left: 10px;">0</span>
+                </div>
+            </div>
+
+            <div id="bso-box">
+                <div id="inning" style="font-weight: bold; text-align: center;">-회-</div>
+                <div class="bso-lights">
+                    <div>B</div>
+                    <div id="ball-lights" style="display: flex; gap: 4px;">
+                        <div class="light"></div><div class="light"></div><div class="light"></div><div class="light"></div>
+                    </div>
+                </div>
+                <div class="bso-lights">
+                    <div>S</div>
+                    <div id="strike-lights" style="display: flex; gap: 4px;">
+                        <div class="light"></div><div class="light"></div><div class="light"></div>
+                    </div>
+                </div>
+                <div class="bso-lights">
+                    <div>O</div>
+                    <div id="out-lights" style="display: flex; gap: 4px;">
+                        <div class="light"></div><div class="light"></div><div class="light"></div>
+                    </div>
+                </div>
+                <div id="current-pitcher-name" style="text-align: center; margin-top: 5px; font-size: 12px;"></div>
+            </div>
+
+            <div id="on-deck">
+                <h4>대기타석</h4>
+                <ul id="on-deck-list"></ul>
+            </div>
+
+            <div id="player-positions">
+                <div id="pitcher" class="player-position"><img src="" alt="투수"><span class="name">---</span></div>
+                <div id="catcher" class="player-position"><img src="" alt="포수"><span class="name">---</span></div>
+                <div id="pos-1b" class="player-position"><img src="" alt="1루수"><span class="name">---</span></div>
+                <div id="pos-2b" class="player-position"><img src="" alt="2루수"><span class="name">---</span></div>
+                <div id="pos-3b" class="player-position"><img src="" alt="3루수"><span class="name">---</span></div>
+                <div id="pos-ss" class="player-position"><img src="" alt="유격수"><span class="name">---</span></div>
+                <div id="pos-lf" class="player-position"><img src="" alt="좌익수"><span class="name">---</span></div>
+                <div id="pos-cf" class="player-position"><img src="" alt="중견수"><span class="name">---</span></div>
+                <div id="pos-rf" class="player-position"><img src="" alt="우익수"><span class="name">---</span></div>
+                <div id="batter" class="player-position"><img src="" alt="타자"><span class="name">---</span></div>
+            </div>
+        </div>
+
+        <div class="update-info">
+            <span id="error-log"></span>
+            <span>자동 업데이트 <strong id="countdown" style="color: #000;">10</strong>초 후</span>
+        </div>
+        <div class="info-container">
+            
+            <div id="event-notification-banner"></div>
+            
+            <div id="inning-title" class="inning-title">데이터 로드 중...</div>
+
+            <div class="player-card" id="pitcher-card">
+                <img id="p-img" src="">
+                <div class="player-info">
+                    <div><span id="p-name" class="name">---</span><span id="p-pos" class="position">투수</span></div>
+                    <div id="p-stats" class="player-stats"></div>
+                </div>
+            </div>
+
+            <div class="player-card" id="batter-card">
+                <img id="b-img" src="">
+                <div class="player-info">
+                    <div><span id="b-name" class="name">---</span><span id="b-pos" class="position">타자</span></div>
+                    <div id="b-stats" class="player-stats"></div>
+                </div>
+            </div>
+            
+            <div id="pitch-by-pitch-list"></div>
+        </div>
+    </div>
+
+    <script>
+        let currentInning = 1;
+        // 이전에 처리한 가장 마지막 이벤트의 순번(seqno)
+        let lastProcessedSeqNo = 0; 
+
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchData();
+            startCountdown();
+        });
+
+        async function fetchData() {
+            const url = `http://localhost:3000/api/relay?inning=${currentInning}`;
+            const requestUrl = url; 
+            
+            document.getElementById('error-log').textContent = '';
+
+            try {
+                const response = await fetch(requestUrl); 
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                
+                const data = await response.json();
+                if (!data.success) throw new Error(data.message || 'API에서 데이터를 가져오지 못했습니다.');
+                
+                updateUI(data.result);
+
+            } catch (error) {
+                console.error('실시간 데이터 처리 중 오류:', error);
+                document.getElementById('error-log').textContent = `데이터 로드 실패: ${error.message}`;
+            }
+        }
+
+        // 2. 데이터를 HTML에 적용하기
+        function updateUI(result) {
+            if (!result || !result.game || !result.textRelayData) {
+                document.getElementById('inning-title').textContent = "경기가 종료되었거나 데이터를 불러올 수 없습니다.";
+                return;
+            }
+            
+            const game = result.game;
+            const data = result.textRelayData;
+            const state = data.currentGameState;
+
+            // [ ⚾ 3. 이벤트 감지 로직 수정 ⚾ ]
+            try {
+                const relays = data.textRelayData.textRelays;
+                let latestEvent = null; // 이번에 로드한 데이터 중 가장 최신 "플레이"
+                let currentMaxSeqNo = lastProcessedSeqNo;
+
+                // 1. 모든 타석(relays)과 모든 플레이(textOptions)를 순회
+                for (const atBat of relays) {
+                    for (const play of atBat.textOptions) {
+                        const seqNo = play.seqno;
+                        
+                        // 2. "플레이"에 해당하는 타입(1, 13, 23)인지 확인
+                        if (play.type === 1 || play.type === 13 || play.type === 23) {
+                            // 3. 현재까지 찾은 최신 이벤트보다 더 최신인지 확인
+                            if (!latestEvent || seqNo > latestEvent.seqno) {
+                                latestEvent = play;
+                            }
+                        }
+                        
+                        // 4. 이번에 로드한 모든 이벤트 중 가장 큰 seqno를 찾음 (다음 요청을 위해)
+                        if (seqNo > currentMaxSeqNo) {
+                            currentMaxSeqNo = seqNo;
+                        }
+                    }
+                }
+
+                // 5. 알림 배너 DOM 요소를 찾음
+                const banner = document.getElementById('event-notification-banner');
+
+                // 6. 가장 최신 "플레이"가 있고, 이전에 처리한 "플레이"가 아닐 경우
+                if (latestEvent && latestEvent.seqno > lastProcessedSeqNo) {
+                    const playText = latestEvent.text;
+
+                    // 7. 홈런 (type: 23)
+                    if (latestEvent.type === 23 && playText.includes('홈런')) {
+                        banner.textContent = `⚾ ${playText} ⚾`;
+                        banner.style.backgroundColor = '#FFF1F0';
+                        banner.style.color = '#D93025';
+                    } 
+                    // 8. 안타/N루타 (type: 13)
+                    else if (latestEvent.type === 13 && (playText.includes('안타') || playText.includes('루타'))) {
+                        banner.textContent = `🔥 ${playText} 🔥`;
+                        banner.style.backgroundColor = '#E8F0FE';
+                        banner.style.color = '#1A73E8';
+                    }
+                    // 9. '볼' (type: 1) 감지
+                    else if (latestEvent.type === 1 && playText.includes('볼')) {
+                        banner.textContent = `🔵 ${playText} 🔵`;
+                        banner.style.backgroundColor = '#E6F4EA';
+                        banner.style.color = '#34A853';
+                    }
+                    // 10. (보너스) 스트라이크/헛스윙 감지
+                    else if (latestEvent.type === 1 && (playText.includes('스트라이크') || playText.includes('헛스윙') || playText.includes('파울'))) {
+                        banner.textContent = `🟡 ${playText} 🟡`;
+                        banner.style.backgroundColor = '#FFF8E1';
+                        banner.style.color = '#FAA91A';
+                    }
+                    // 11. (보너스) 아웃 감지
+                    else if (latestEvent.type === 13 && (playText.includes('아웃') || playText.includes('삼진'))) {
+                         banner.textContent = `⚪ ${playText} ⚪`;
+                         banner.style.backgroundColor = '#F1F3F4';
+                         banner.style.color = '#5F6368';
+                    }
+                    // 12. 그 외의 경우는 배너 비우기
+                    else {
+                        banner.textContent = '';
+                        banner.style.backgroundColor = '#f0f0f0';
+                        banner.style.color = '#333';
+                    }
+                }
+                
+                // 13. 마지막으로 처리한 seqno를 갱신
+                lastProcessedSeqNo = currentMaxSeqNo;
+
+            } catch (e) {
+                console.error("이벤트 감지 중 오류:", e);
+            }
+            // --- 이벤트 감지 로직 끝 ---
+
+
+            // --- (기존 UI 업데이트 로직) ---
+
+            function getPlayerByPcode(lineup, pcode) {
+                if (!lineup) return {};
+                return lineup.find(p => p.pcode === pcode) || {};
+            }
+            
+            currentInning = data.inn;
+
+            document.getElementById('away-logo').src = game.awayTeamEmblemUrl;
+            document.getElementById('away-name').textContent = game.awayTeamShortName;
+            document.getElementById('away-score').textContent = state.awayScore;
+            
+            document.getElementById('home-logo').src = game.homeTeamEmblemUrl;
+            document.getElementById('home-name').textContent = game.homeTeamShortName;
+            document.getElementById('home-score').textContent = state.homeScore;
+
+            document.getElementById('inning').textContent = game.statusInfo;
+            
+            updateLights('ball-lights', parseInt(state.ball));
+            updateLights('strike-lights', parseInt(state.strike));
+            updateLights('out-lights', parseInt(state.out));
+            
+            const isHomeAttack = (data.homeOrAway === "1");
+            const defenseLineup = isHomeAttack ? data.awayLineup : data.homeLineup;
+            const attackLineup = isHomeAttack ? data.homeLineup : data.awayLineup;
+
+            const pitcher = getPlayerByPcode(defenseLineup.pitcher, state.pitcher);
+            const batter = getPlayerByPcode(attackLineup.batter, state.batter);
+
+            document.getElementById('current-pitcher-name').textContent = pitcher.name || '---';
+            document.getElementById('p-name').textContent = pitcher.name || '---';
+            document.getElementById('p-pos').textContent = `투수(${pitcher.hitType || '---'})`;
+            document.getElementById('p-stats').innerHTML = `
+                <span>이닝 <strong>${pitcher.inn || 0.0}</strong></span>
+                <span>탈삼진 <strong>${pitcher.kk || 0}</strong></span>
+                <span>실점 <strong>${pitcher.run || 0}</strong></span>
+                <span>피안타 <strong>${pitcher.hit || 0}</strong></span>
+                <span>투구수 <strong>${pitcher.ballCount || 0}</strong></span>`;
+            
+            document.getElementById('b-name').textContent = batter.name || '---';
+            document.getElementById('b-pos').textContent = `${batter.batOrder}번타자(${batter.hitType || '---'})`;
+            document.getElementById('b-stats').innerHTML = `
+                <span>타율 <strong>${batter.todayHra || 0.000}</strong></span>
+                <span>타석 <strong>${batter.pa || 0}</strong></span>
+                <span>타수 <strong>${batter.ab || 0}</strong></span>
+                <span>안타 <strong>${batter.hit || 0}</strong></span>
+                <span>홈런 <strong>${batter.hr || 0}</strong></span>
+                <span>볼넷 <strong>${batter.bb || 0}</strong></span>`;
+
+            const defense = {};
+            if (defenseLineup && defenseLineup.batter) {
+                defenseLineup.batter.forEach(p => {
+                    if (!p.cout) { 
+                        defense[p.pos] = p.name;
+                    }
+                });
+            }
+            
+            updatePlayerPos('pitcher', pitcher.name);
+            updatePlayerPos('catcher', defense[2]);
+            updatePlayerPos('pos-1b', defense[3]);
+            updatePlayerPos('pos-2b', defense[4]);
+            updatePlayerPos('pos-3b', defense[5]);
+            updatePlayerPos('pos-ss', defense[6]);
+            updatePlayerPos('pos-lf', defense[7]);
+            updatePlayerPos('pos-cf', defense[8]);
+            updatePlayerPos('pos-rf', defense[9]);
+            updatePlayerPos('batter', batter.name);
+
+            const onDeckList = document.getElementById('on-deck-list');
+            onDeckList.innerHTML = '';
+            
+            if (attackLineup && attackLineup.batter) {
+                const currentBatOrder = batter.batOrder;
+                const lineup = attackLineup.batter.filter(p => !p.cout);
+                
+                let currentIndex = lineup.findIndex(p => p.batOrder === currentBatOrder);
+                if (currentIndex !== -1) {
+                    for (let i = 1; i <= 3; i++) {
+                        let nextIndex = (currentIndex + i) % lineup.length;
+                        let nextBatter = lineup[nextIndex];
+                        if(nextBatter) {
+                            const li = document.createElement('li');
+                            li.textContent = `${nextBatter.batOrder}.${nextBatter.name}`;
+                            onDeckList.appendChild(li);
+                        }
+                    }
+                }
+            }
+
+            const pbpList = document.getElementById('pitch-by-pitch-list');
+            pbpList.innerHTML = ''; 
+            
+            const currentAtBatRelay = data.textRelays.find(r => r.no === data.no);
+            if (currentAtBatRelay) {
+                document.getElementById('inning-title').textContent = `${data.inn}회${isHomeAttack ? '말' : '초'} - ${isHomeAttack ? game.homeTeamName : game.awayTeamName} 공격`;
+                
+                currentAtBatRelay.textOptions.slice().reverse().forEach(p => {
+                    const div = document.createElement('div');
+                    if (p.type === 1 || p.type === 13) {
+                        div.textContent = p.text;
+                    } else if (p.type === 2 && p.playerChange) {
+                        div.textContent = `🔄 ${p.playerChange.liveText}`;
+                        div.className = 'change';
+                    }
+                    if (div.textContent) {
+                        pbpList.appendChild(div);
+                    }
+                });
+            }
+        }
+
+        // --- 유틸리티 함수 ---
+        function updateLights(elementId, count) {
+            const lights = document.querySelectorAll(`#${elementId} .light`);
+            lights.forEach((light, index) => {
+                light.classList.toggle('on', index < count);
+            });
+        }
+        
+        function updatePlayerPos(elementId, name) {
+            const el = document.getElementById(elementId);
+            if (el) {
+                el.querySelector('.name').textContent = name || '---';
+            }
+        }
+
+        function startCountdown() {
+            let seconds = 10;
+            const countdownEl = document.getElementById('countdown');
+            
+            setInterval(() => {
+                seconds--;
+                if (seconds <= 0) {
+                    seconds = 10;
+                    fetchData(); // 10초마다 데이터 새로고침
+                }
+                countdownEl.textContent = seconds;
+            }, 1000);
+        }
+    </script>
+
+</body>
+</html>
